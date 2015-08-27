@@ -21,19 +21,20 @@
 
 package org.openpnp.machine.reference.camera;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
+import java.util.Vector;
 
 import javax.swing.Action;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
-import org.opencv.core.Size;
 import org.opencv.highgui.VideoCapture;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.ml.CvNormalBayesClassifier;
 import org.openpnp.CameraListener;
 import org.openpnp.gui.support.PropertySheetWizardAdapter;
 import org.openpnp.gui.support.Wizard;
@@ -56,6 +57,9 @@ public class OpenCvCamera extends ReferenceCamera implements Runnable {
 	@Attribute(name="deviceIndex", required=true)
 	private int deviceIndex = 0;
 	
+	@Attribute(required=false)
+	private boolean showHistogram = false;
+	
 	private VideoCapture fg = new VideoCapture();
 	private Thread thread;
 	
@@ -72,11 +76,54 @@ public class OpenCvCamera extends ReferenceCamera implements Runnable {
 		    if (!fg.read(mat)) {
 		        return null;
 		    }
-			return applyRotation(OpenCvUtils.toBufferedImage(mat));
+		    
+		    BufferedImage img = OpenCvUtils.toBufferedImage(mat);
+            img = applyRotation(img);
+
+		    if (showHistogram) {
+	            addHistogram(mat, img);
+		    }
+            
+		    mat.release();
+		    return img;
+			//return applyRotation(OpenCvUtils.toBufferedImage(mat));
 		}
 		catch (Exception e) {
+		    e.printStackTrace();
 			return null;
 		}
+	}
+	
+	// TODO: Move this into CameraView, or a layer inbetween, so it works with
+	// any type of camera.
+	private void addHistogram(Mat src, BufferedImage dest) {
+        Graphics g = dest.getGraphics();
+        // TODO: Probably need to ensure it's BGR
+        Color[] colors = new Color[] { Color.blue, Color.green, Color.red };
+        Vector<Mat> hists = new Vector<>();
+        Core.split(src, hists);
+        for (int j = 0; j < hists.size(); j++) {
+            Mat hist = hists.get(j);
+            Imgproc.calcHist(
+                    Collections.singletonList(src), 
+                    new MatOfInt(j), 
+                    new Mat(), 
+                    hist, 
+                    new MatOfInt(255), 
+                    new MatOfFloat(0, 256));
+            Core.normalize(hist, hist, 0, 1, Core.NORM_MINMAX);
+            double w = dest.getWidth() / 255;
+            for (int i = 1; i < 255; i++) {
+                g.setColor(colors[j]);
+                g.drawLine(
+                        (int) ((i - 1) * w), 
+                        (int) (hist.get(i - 1, 0)[0] * dest.getHeight()), 
+                        (int) (i * w), 
+                        (int) (hist.get(i, 0)[0] * dest.getHeight()) 
+                        );
+            }
+        }
+        g.dispose();
 	}
 	
 	@Override
