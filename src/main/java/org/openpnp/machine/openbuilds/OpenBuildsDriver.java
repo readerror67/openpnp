@@ -100,6 +100,18 @@ public class OpenBuildsDriver extends AbstractSerialPortDriver implements Runnab
         getCurrentPosition();
     }
     
+    @Override
+    public void visualHome(ReferenceHead head) throws Exception {
+    	sendCommand("G92 X0 Y0");
+        // Zero out the two "extruders"
+        sendCommand("T1");
+        sendCommand("G92 E0");
+        sendCommand("T0");
+        sendCommand("G92 E0");
+        // Update position
+        getCurrentPosition();
+    }    
+    
     
     @Override
     public void actuate(ReferenceActuator actuator, boolean on)

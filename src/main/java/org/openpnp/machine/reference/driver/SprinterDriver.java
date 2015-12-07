@@ -459,5 +459,11 @@ public class SprinterDriver extends AbstractSerialPortDriver implements Runnable
     public Action[] getPropertySheetHolderActions() {
         // TODO Auto-generated method stub
         return null;
-    }    
+    }
+
+	@Override
+	public void visualHome(ReferenceHead referenceHead) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}    
 }

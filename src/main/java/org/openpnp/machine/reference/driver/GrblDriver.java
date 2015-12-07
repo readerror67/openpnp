@@ -349,5 +349,11 @@ public class GrblDriver extends AbstractSerialPortDriver implements Runnable {
         return new PropertySheet[] {
                 new PropertySheetWizardAdapter(getConfigurationWizard())
         };
-    }    
+    }
+
+	@Override
+	public void visualHome(ReferenceHead referenceHead) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}    
 }

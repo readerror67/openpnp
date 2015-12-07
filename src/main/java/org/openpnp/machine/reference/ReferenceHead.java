@@ -60,6 +60,14 @@ public class ReferenceHead extends AbstractHead {
         driver.home(this);
         machine.fireMachineHeadActivity(this);
     }
+    
+    @Override
+    public void visualHome() throws Exception {
+		logger.debug("{}.visualHome()", getName());
+        driver.visualHome(this);
+        machine.fireMachineHeadActivity(this);
+    }
+    
 
 	@Override
     public Wizard getConfigurationWizard() {

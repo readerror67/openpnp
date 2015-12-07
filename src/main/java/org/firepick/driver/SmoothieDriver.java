@@ -116,6 +116,12 @@ public class SmoothieDriver extends AbstractSerialPortDriver implements Runnable
 	}
 	
 	@Override
+	public void visualHome(ReferenceHead head) throws Exception {
+		List<String> responses;
+		sendCommand("G92 X0 Y0");
+	}	
+	
+	@Override
   public Location getLocation(ReferenceHeadMountable hm) {
     return new Location(LengthUnit.Millimeters, x, y, z, c).add(hm.getHeadOffsets());
   }

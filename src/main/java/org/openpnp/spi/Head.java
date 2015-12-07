@@ -97,5 +97,7 @@ public interface Head extends Identifiable, Named, WizardConfigurable, PropertyS
     
     public Nozzle getDefaultNozzle();
     
-    public PasteDispenser getDefaultPasteDispenser(); 
+    public PasteDispenser getDefaultPasteDispenser();
+
+	void visualHome() throws Exception; 
 }

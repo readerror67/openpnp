@@ -480,4 +480,10 @@ public class LinuxCNC implements ReferenceDriver, Runnable {
         // TODO Auto-generated method stub
         
     }
+
+	@Override
+	public void visualHome(ReferenceHead referenceHead) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

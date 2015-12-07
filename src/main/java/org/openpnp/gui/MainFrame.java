@@ -255,7 +255,7 @@ public class MainFrame extends JFrame {
 
 		mnCommands.add(new JMenuItem(machineControlsPanel.homeAction));
 		mnCommands.add(new JMenuItem(machineControlsPanel.goToZeroAction));
-		
+		mnCommands.add(new JMenuItem(machineControlsPanel.visualZeroAction));
 		// Help
 		/////////////////////////////////////////////////////////////////////
 		if (!macOsXMenus) {

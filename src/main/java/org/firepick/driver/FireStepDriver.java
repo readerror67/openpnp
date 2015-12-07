@@ -512,4 +512,10 @@ public class FireStepDriver extends AbstractSerialPortDriver implements Runnable
 	            new PropertySheetWizardAdapter(getConfigurationWizard())
 	    };
 	}
+
+	@Override
+	public void visualHome(ReferenceHead referenceHead) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

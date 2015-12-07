@@ -542,6 +542,26 @@ public class MachineControlsPanel extends JPanel {
 	};
 	
 	@SuppressWarnings("serial")
+	public Action visualZeroAction = new AbstractAction("Visual Zero") {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			submitMachineTask(new Runnable() {
+				public void run() {
+					try {
+						selectedNozzle.moveToSafeZ(1.0);
+						selectedNozzle.getHead().visualHome();
+						// Move to 0, 0, 0, 0.
+						//selectedNozzle.moveTo(new Location(LengthUnit.Millimeters, 0, 0, 0, 0), 1.0);
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+						MessageBoxes.errorBox(frame, "Visual Zero Failed", e);
+					}
+				}
+			});
+		}
+	};	
+	@SuppressWarnings("serial")
 	public Action homeAction = new AbstractAction("Home") {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
